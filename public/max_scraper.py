@@ -7,30 +7,35 @@ from bs4 import BeautifulSoup
 import time
 import csv
 import requests
-driver = webdriver.Chrome()
-
 response = requests.get(url)
+mode = "" #mode=extract/scrape/""
+if(mode != "scrape"):
+    driver = webdriver.Chrome()
+    driver.maximize_window()
 
-driver.maximize_window()
+    driver.get(url)
 
-driver.get(url)
+    last_height = 0
 
-last_height = 0
+    while True:
+        driver.execute_script('window.scrollBy(0, 1400)')
+        time.sleep(4)
 
-while True:
-    driver.execute_script('window.scrollBy(0, 1000)')
-    time.sleep(1)
+        new_height = driver.execute_script('return document.body.scrollHeight')
+        print(str(new_height)+"-"+str(last_height))
 
-    new_height = driver.execute_script('return document.body.scrollHeight')
-    print(str(new_height)+"-"+str(last_height))
+        if(new_height == last_height):
+            break
 
-    if(new_height == last_height):
-        break
+        else:
+            last_height = new_height
 
-    else:
-        last_height = new_height
-
-page_source = driver.page_source
+    page_source = driver.page_source
+    f = open(path_to_file+"source.txt","w",encoding="utf-8")
+    f.write(page_source)
+    f.close()
+    if(mode != "scrape"):
+        pass
 
 html = response.text
 soup = BeautifulSoup(response.content, 'html.parser')
