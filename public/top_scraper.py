@@ -1,4 +1,4 @@
-url = "https://www.rimi.lv/e-veikals/lv/akcijas-piedavajumi"
+url = "https://etop.lv/lv/visi-akcijas-produkti"
 response = requests.get(url)
 
 soup = BeautifulSoup(html, "html.parser")
