@@ -14847,8 +14847,7 @@ fbq('track', 'PageView');
             <span class="unit-price"></span>
         </div>
                     <div class="t2">
-                <span class="value">129,99</
-                span>
+                <span class="value">129,99</span>
                 <span class="eur">€</span>
             </div>
             <div class="t3 ">
