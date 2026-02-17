@@ -7,14 +7,15 @@ from bs4 import BeautifulSoup
 import time
 import csv
 import requests
+
 response = requests.get(url)
-mode = "" #mode=extract/scrape/""
+
+mode = ""  # mode=extract/scrape/""
 if(mode != "scrape"):
     driver = webdriver.Chrome()
     driver.maximize_window()
 
     driver.get(url)
-
     last_height = 0
 
     while True:
@@ -31,7 +32,7 @@ if(mode != "scrape"):
             last_height = new_height
 
     page_source = driver.page_source
-    f = open(path_to_file+"source.txt","w",encoding="utf-8")
+    f = open(path_to_file+"max.txt","w",encoding="utf-8")
     f.write(page_source)
     f.close()
     if(mode != "scrape"):
@@ -39,6 +40,8 @@ if(mode != "scrape"):
 
 html = response.text
 soup = BeautifulSoup(response.content, 'html.parser')
+
+
 
 print(f"Response status: {response.status_code}")
 print(f"HTML length: {len(html)}")
