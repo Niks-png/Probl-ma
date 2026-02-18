@@ -1,76 +1,52 @@
 url = "https://www.maxima.lv/piedavajumi"
 
-path_to_file = r"C:\laragon\www\Problēma\public\\"
+path_to_file = r"C:\laragon\www\Problēma\Probl-ma\public\\"
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup
 import time
 import csv
-import requests
 
-response = requests.get(url)
+driver = webdriver.Chrome()
+driver.maximize_window()
 
-mode = ""  # mode=extract/scrape/""
-if(mode != "scrape"):
-    driver = webdriver.Chrome()
-    driver.maximize_window()
+driver.get(url)
+time.sleep(3)
 
-    driver.get(url)
-    last_height = 0
+last_height = 0
+scroll_count = 0
+max_scrolls = 100
+while scroll_count < max_scrolls:
+    driver.execute_script('window.scrollBy(0, 2000)')
+    time.sleep(3)
+    scroll_count += 1
 
-    while True:
-        driver.execute_script('window.scrollBy(0, 1400)')
-        time.sleep(4)
+    new_height = driver.execute_script('return document.body.scrollHeight')
+    print(f"Scroll {scroll_count}: Height = {new_height}")
 
-        new_height = driver.execute_script('return document.body.scrollHeight')
-        print(str(new_height)+"-"+str(last_height))
+    if new_height == last_height:
+        print("Reached bottom of page")
+        break
 
-        if(new_height == last_height):
-            break
+    last_height = new_height
 
-        else:
-            last_height = new_height
+print(f"Total scrolls: {scroll_count}")
 
-    page_source = driver.page_source
-    f = open(path_to_file+"max.txt","w",encoding="utf-8")
-    f.write(page_source)
-    f.close()
-    if(mode != "scrape"):
-        pass
+page_source = driver.page_source
+driver.quit()
 
-html = response.text
-soup = BeautifulSoup(response.content, 'html.parser')
+html = page_source
+soup = BeautifulSoup(page_source, 'html.parser')
 
-
-
-print(f"Response status: {response.status_code}")
 print(f"HTML length: {len(html)}")
 
-price_divs = soup.find_all("div", class_=lambda x: x and "price" in x)
-print(f"Found {len(price_divs)} divs with 'price' in class")
-if price_divs:
-    for i, div in enumerate(price_divs[:3]):
-        print(f"\nDiv {i}: {div.get('class')}")
-        print(div)
-
-print("\n\n=== Looking for span elements with 'value' or 'cents' ===")
-values = soup.find_all("span", class_=lambda x: x and ("value" in x or "cents" in x))
-print(f"Found {len(values)} span elements")
-if values:
-    for i, span in enumerate(values[:5]):
-        print(f"Span {i}: class='{span.get('class')}' text='{span.get_text(strip=True)}'")
-
-print("\n\n=== Looking for discount-related elements ===")
-discounts = soup.find_all(class_=lambda x: x and "discount" in x.lower())
-print(f"Found {len(discounts)} discount elements")
-if discounts:
-    for i, elem in enumerate(discounts[:2]): 
-        print(f"\nDiscount {i}: tag={elem.name} class='{elem.get('class')}'")
-        print(str(elem)[:500])
-
-print("\n\n=== Looking for product titles (food names) ===")
+print("\n=== Looking for product titles (food names) ===")
 products = soup.find_all("div", class_="item")
 print(f"Found {len(products)} product items")
+
+csv_file = open(path_to_file+"max_products.csv", "w", newline="", encoding="utf-8")
+csv_writer = csv.writer(csv_file)
+csv_writer.writerow(["Title", "Original Price", "Current Price", "Discount"])
 
 if products:
     for i, product in enumerate(products):
@@ -78,15 +54,20 @@ if products:
         title_elem = product.find("div", class_="title")
         title = title_elem.get_text(strip=True) if title_elem else "N/A"
         
-    
         price_elem = product.find("div", class_="t1")
         if price_elem:
             value = price_elem.find("span", class_="value")
             cents = price_elem.find("span", class_="cents")
-            price = f"{value.get_text(strip=True)}.{cents.get_text(strip=True)}" if value and cents else "N/A"
+            current_price = f"{value.get_text(strip=True)}.{cents.get_text(strip=True)}" if value and cents else "N/A"
         else:
-            price = "N/A"
+            current_price = "N/A"
         
+        original_price = "N/A"
+        price_elem_original = product.find("div", class_="t0")
+        if price_elem_original:
+            value_orig = price_elem_original.find("span", class_="value")
+            cents_orig = price_elem_original.find("span", class_="cents")
+            original_price = f"{value_orig.get_text(strip=True)}.{cents_orig.get_text(strip=True)}" if value_orig and cents_orig else "N/A"
 
         discount_elem = product.find("span", class_="bottom-icon-item")
         if discount_elem:
@@ -95,7 +76,14 @@ if products:
         else:
             discount = "N/A"
         
+        csv_writer.writerow([title, original_price, current_price, discount])
+        
         print(f"\nProduct {i}:")
         print(f"  Title: {title}")
-        print(f"  Price: €{price}")
+        print(f"  Original Price: €{original_price}")
+        print(f"  Current Price: €{current_price}")
         print(f"  Discount: {discount}")
+
+csv_file.close()
+print(f"\n\nTotal products scraped: {len(products)}")
+print(f"Data saved to max_products.csv")
