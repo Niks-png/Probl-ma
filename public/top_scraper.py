@@ -1,5 +1,5 @@
 url = "https://etop.lv/lv/visi-akcijas-produkti"
-path_to_file = r"C:\laragon\www\Problēma\Probl-ma\public\\"
+path_to_file = r"C:\laragon\www\Probl-ma\public\\"
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -49,15 +49,8 @@ print(f"\nTotal load more attempts: {load_more_count}")
 page_source = driver.page_source
 driver.quit()
 
-f = open(path_to_file+"top.txt", "w", encoding="utf-8")
-f.write(page_source)
-f.close()
-print(f"Page source saved to top.txt after {load_more_count} load more clicks")
-
 html = page_source
 soup = BeautifulSoup(page_source, 'html.parser')
-
-print(f"HTML length: {len(html)}")
 products = soup.find_all("div", class_="product-card-wrap")
 print(f"\nFound {len(products)} product items\n")
 
@@ -91,36 +84,22 @@ for i, product in enumerate(products):
         if price_span:
             original_price = price_span.get_text(strip=True)
     
-    unit_price = "N/A"
-    unit_price_elem = product.find("div", class_="product-unit-price")
-    if unit_price_elem:
-        unit_price = unit_price_elem.get_text(strip=True)
-    
-    discount = "N/A"
-    discount_elem = product.find(class_=lambda x: x and "discount" in x.lower())
-    if discount_elem:
-        discount = discount_elem.get_text(strip=True)
-    
     product_data = {
         "title": title,
         "original_price": original_price,
-        "current_price": current_price,
-        "unit_price": unit_price,
-        "discount": discount
+        "current_price": current_price
     }
     all_items.append(product_data)
     
     print(f"Product {i}:")
     print(f"  Title: {title}")
     print(f"  Original Price: {original_price}")
-    print(f"  Current Price: €{current_price}")
-    print(f"  Unit Price: {unit_price}")
-    print(f"  Discount: {discount}\n")
+    print(f"  Current Price: €{current_price}\n")
 
 
 if all_items:
     with open(path_to_file + "top_products.csv", "w", newline="", encoding="utf-8") as csvfile:
-        fieldnames = ["title", "original_price", "current_price", "unit_price", "discount"]
+        fieldnames = ["title", "original_price", "current_price"]
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
         writer.writerows(all_items)
