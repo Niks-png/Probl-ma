@@ -146,26 +146,14 @@ body {
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
 }
 
-.product-store-badge {
+.store-logo {
     position: absolute;
     top: 12px;
     right: 12px;
-    padding: 6px 12px;
-    border-radius: 4px;
-    font-size: 12px;
-    font-weight: 700;
-    text-transform: uppercase;
+    width: 40px;
+    height: 40px;
     z-index: 10;
-}
-
-.product-card.max .product-store-badge {
-    background-color: #ee1c25;
-    color: white;
-}
-
-.product-card.top .product-store-badge {
-    background-color: #ffd700;
-    color: #333;
+    cursor: pointer;
 }
 
 .product-image-placeholder {

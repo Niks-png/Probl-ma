@@ -18,9 +18,7 @@
             <div class="products-grid">
                 @forelse($products as $product)
                     <article class="product-card {{ $product['store_class'] }}">
-                        <div class="product-store-badge" aria-label="Store name">
-                            {{ $product['store'] }}
-                        </div>
+                        <img src="{{ asset($product['store']) }}" alt="Store logo" class="store-logo" aria-label="Store name">
                         
                         <div class="product-image-placeholder" aria-hidden="true">
                             📦

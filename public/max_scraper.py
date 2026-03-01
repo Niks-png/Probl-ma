@@ -74,7 +74,6 @@ if products:
             if value_orig and cents_orig:
                 original_price = f"{value_orig.get_text(strip=True)}.{cents_orig.get_text(strip=True)}"
             else:
-                # Fallback: get all text from price element and clean it
                 original_price = price_elem_original.get_text(strip=True).strip()
                 if not original_price or original_price == "::before":
                     original_price = "N/A"

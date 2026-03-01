@@ -9,12 +9,12 @@ class ProductService
 
     private const STORES = [
         'max' => [
-            'name' => 'MAXIMA',
+            'name' => 'max.png',
             'file' => 'max_products.csv',
             'class' => 'max',
         ],
         'top' => [
-            'name' => 'eTOP',
+            'name' => 'top.png',
             'file' => 'top_products.csv',
             'class' => 'top',
         ],
