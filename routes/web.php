@@ -21,7 +21,7 @@ Route::controller(PageController::class)->group(function () {
     Route::get('/', 'home')->name('home');
 });
 
-// Temporary login/register routes (simplified)
+//login/register routes
 Route::get('/login', function () {
     return view('login');
 })->name('login')->middleware('guest');
