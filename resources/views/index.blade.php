@@ -1,16 +1,16 @@
 @extends('layouts.app')
-@section('title', $search ? "Search Results for \"$search\"" : 'Home')
+@section('title', $search ? "Meklēšanas rezultāti par \"$search\"" : 'Sākums')
 @section('content')
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         @if($search)
             <section class="mb-8">
-                <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">Search Results for "{{ $search }}"</h1>
-                <p class="text-sm text-gray-600 dark:text-gray-400">Found {{ count($products) }} product(s)</p>
+                <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">Meklēšanas rezultāti par "{{ $search }}"</h1>
+                <p class="text-sm text-gray-600 dark:text-gray-400">Atrasti {{ count($products) }} produkti</p>
             </section>
         @else
             <section class="text-center mb-12">
-                <h1 class="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">Welcome to Price Finder</h1>
-                <p class="text-lg text-gray-600 dark:text-gray-400">Find the best prices on your favorite products</p>
+                <h1 class="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">Laipni lūgti Price Finder</h1>
+                <p class="text-lg text-gray-600 dark:text-gray-400">Atrodiet labākās cenas jūsu iecienītākajiem produktiem</p>
             </section>
         @endif
         
@@ -41,7 +41,7 @@
                     </article>
                 @empty
                     <div class="col-span-full text-center py-16">
-                        <p class="text-gray-500 dark:text-gray-400 text-lg">{{ $search ? 'No products found. Try a different search.' : 'No products found. Please run the scrapers first.' }}</p>
+                        <p class="text-gray-500 dark:text-gray-400 text-lg">{{ $search ? 'Produkti neatrasti. Mēģiniet citu meklēšanas vaicājumu.' : 'Produkti neatrasti. Lūdzu, vispirms palaidiet skrāpjus.' }}</p>
                     </div>
                 @endforelse
             </div>

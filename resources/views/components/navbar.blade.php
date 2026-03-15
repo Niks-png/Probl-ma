@@ -11,19 +11,145 @@
                 </div>
 
                 <!-- Search -->
-                <form action="{{ route('home') }}" method="GET" class="hidden sm:flex items-center ms-10">
-                    <input
-                        type="text"
-                        class="px-3 py-2 border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md text-sm"
-                        name="q"
-                        placeholder="Search products..."
-                        value="{{ request('q') }}"
-                        aria-label="Search products by title"
-                        autocomplete="off"
-                    >
-                    <button class="ms-2 px-4 py-2 bg-gray-800 text-white text-sm rounded-md hover:bg-gray-700" type="submit" aria-label="Search">
-                        Search
-                    </button>
+                <form action="{{ route('home') }}" method="GET" class="hidden sm:flex sm:flex-col items-start ms-10 space-y-2" x-data="{ categoriesOpen: false }">
+                    <div class="flex items-center gap-2">
+                        <input
+                            type="text"
+                            class="px-3 py-2 border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md text-sm"
+                            name="q"
+                            placeholder="Meklēt produktus..."
+                            value="{{ request('q') }}"
+                            aria-label="Meklēt produktus pēc nosaukuma"
+                            autocomplete="off"
+                        >
+                        <button class="px-4 py-2 bg-gray-800 text-white text-sm rounded-md hover:bg-gray-700" type="submit" aria-label="Meklēt">
+                            Meklēt
+                        </button>
+                    </div>
+                    
+                    
+                    <div class="flex gap-4 text-sm items-center">
+                        <!-- Store Dropdown -->
+                        <div class="relative" style="width: 120px;">
+                            <select 
+                                name="shop" 
+                                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md text-sm appearance-none cursor-pointer bg-white dark:bg-gray-900"
+                                onchange="this.form.submit()"
+                            >
+                                <option value="">Visi veikali</option>
+                                <option value="top" {{ request('shop') === 'top' ? 'selected' : '' }}>🔝 Top</option>
+                                <option value="max" {{ request('shop') === 'max' ? 'selected' : '' }}>📦 Maxima</option>
+                            </select>
+                        </div>
+
+                        <!-- Category Dropdown -->
+                        <div class="relative">
+                            <button 
+                                @click="categoriesOpen = !categoriesOpen"
+                                type="button"
+                                class="px-4 py-2 border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md text-sm bg-white dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800 flex items-center gap-2"
+                            >
+                                <span>🛒 Produkti</span>
+                                <svg :class="categoriesOpen ? 'rotate-180' : ''" class="fill-current h-4 w-4 transition-transform" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
+                                </svg>
+                            </button>
+
+                            <!-- Dropdown  -->
+                            <div 
+                                x-show="categoriesOpen"
+                                @click.outside="categoriesOpen = false"
+                                x-transition
+                                class="absolute left-0 mt-2 w-64 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-50"
+                            >
+                                <div class="p-4">
+                                    <h3 class="text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wide mb-3">Kategorijas</h3>
+                                    
+                                    <div class="space-y-2">
+                                        <label class="flex items-center gap-3 p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer transition">
+                                            <input 
+                                                type="checkbox" 
+                                                name="categories[]" 
+                                                value="dairy"
+                                                {{ in_array('dairy', (array)request('categories', [])) ? 'checked' : '' }}
+                                                onchange="this.closest('form').submit()"
+                                                class="rounded border-gray-300 dark:border-gray-700 cursor-pointer"
+                                            >
+                                            <span class="text-lg">🥛</span>
+                                            <span class="text-sm text-gray-700 dark:text-gray-300 flex-1">Piena produktu un olas</span>
+                                        </label>
+
+                                        <label class="flex items-center gap-3 p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer transition">
+                                            <input 
+                                                type="checkbox" 
+                                                name="categories[]" 
+                                                value="vegetables"
+                                                {{ in_array('vegetables', (array)request('categories', [])) ? 'checked' : '' }}
+                                                onchange="this.closest('form').submit()"
+                                                class="rounded border-gray-300 dark:border-gray-700 cursor-pointer"
+                                            >
+                                            <span class="text-lg">🥗</span>
+                                            <span class="text-sm text-gray-700 dark:text-gray-300 flex-1">Augli un dārzeni</span>
+                                        </label>
+
+                                        <label class="flex items-center gap-3 p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer transition">
+                                            <input 
+                                                type="checkbox" 
+                                                name="categories[]" 
+                                                value="bakery"
+                                                {{ in_array('bakery', (array)request('categories', [])) ? 'checked' : '' }}
+                                                onchange="this.closest('form').submit()"
+                                                class="rounded border-gray-300 dark:border-gray-700 cursor-pointer"
+                                            >
+                                            <span class="text-lg">🍞</span>
+                                            <span class="text-sm text-gray-700 dark:text-gray-300 flex-1">Maize un konditorejas iz...</span>
+                                        </label>
+
+                                        <label class="flex items-center gap-3 p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer transition">
+                                            <input 
+                                                type="checkbox" 
+                                                name="categories[]" 
+                                                value="meat"
+                                                {{ in_array('meat', (array)request('categories', [])) ? 'checked' : '' }}
+                                                onchange="this.closest('form').submit()"
+                                                class="rounded border-gray-300 dark:border-gray-700 cursor-pointer"
+                                            >
+                                            <span class="text-lg">🥩</span>
+                                            <span class="text-sm text-gray-700 dark:text-gray-300 flex-1">Gaļa, zivis un gatavā kuli...</span>
+                                        </label>
+
+                                        <label class="flex items-center gap-3 p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer transition">
+                                            <input 
+                                                type="checkbox" 
+                                                name="categories[]" 
+                                                value="beverages"
+                                                {{ in_array('beverages', (array)request('categories', [])) ? 'checked' : '' }}
+                                                onchange="this.closest('form').submit()"
+                                                class="rounded border-gray-300 dark:border-gray-700 cursor-pointer"
+                                            >
+                                            <span class="text-lg">🥤</span>
+                                            <span class="text-sm text-gray-700 dark:text-gray-300 flex-1">Dzērieni</span>
+                                        </label>
+                                    </div>
+
+                                    <!-- Clear Categories -->
+                                    @if(request('categories'))
+                                        <div class="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
+                                            <button 
+                                                type="button"
+                                                onclick="document.querySelectorAll('[name=\'categories[]\']').forEach(el => el.checked = false); this.closest('form').submit();"
+                                                class="w-full px-3 py-2 text-xs text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded transition"
+                                            >
+                                                Notīrīt kategorijas
+                                            </button>
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+
+                        
+                    </div>
                 </form>
 
                 <!-- Navigation Links -->
