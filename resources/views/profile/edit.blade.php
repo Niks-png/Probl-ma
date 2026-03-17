@@ -3,8 +3,8 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="mb-8">
-                <h1 class="text-3xl font-bold text-white">Profile</h1>
-                <p class="text-gray-400 mt-2">Manage your account settings</p>
+                <h1 class="text-lg text-black-600 dark:text-gray-100">Profile</h1>
+                <p class="text-gray-600 mt-2 dark:text-gray-400">Manage your account settings</p>
             </div>
 
             <div class="space-y-6">

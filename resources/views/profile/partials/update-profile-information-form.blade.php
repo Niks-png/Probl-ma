@@ -14,12 +14,12 @@
         @method('patch')
 
         <div>
-            <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Name</label>
+            <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-100">Name</label>
             <input id="name" name="name" type="text" class="mt-2 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-white rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" value="{{ old('name', $user->name) }}" required />
         </div>
 
         <div>
-            <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
+            <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-100">Email</label>
             <input id="email" name="email" type="email" class="mt-2 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-white rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" value="{{ old('email', $user->email) }}" required />
         </div>
 
