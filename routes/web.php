@@ -20,6 +20,9 @@ use App\Http\Controllers\ProfileController;
 Route::controller(PageController::class)->group(function () {
     Route::get('/', 'home')->name('home');
 });
+Route::get('/maps', function () {
+    return view('maps');
+})->name('maps');
 
 //login/register routes
 Route::get('/login', function () {

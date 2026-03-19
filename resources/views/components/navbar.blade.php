@@ -9,6 +9,11 @@
                         <span class="font-bold text-lg text-gray-700 dark:text-gray-100">PriceFinder</span>
                     </a>
                 </div>
+                <div class="shrink-0 flex items-center">
+                    <a href="{{ route('maps') }}">
+                        <span class="px-3 py-2 font-bold text-lg text-gray-700 dark:text-gray-100">maps</span>
+                    </a>
+                </div>
 
                 <!-- Search -->
                 <form action="{{ route('home') }}" method="GET" class="hidden sm:flex sm:flex-col items-start ms-10 space-y-2" x-data="{ categoriesOpen: false }">
